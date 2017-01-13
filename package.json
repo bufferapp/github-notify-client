@@ -1,0 +1,12 @@
+{
+  "name": "github-notify-server",
+  "version": "0.1.0",
+  "dependencies": {
+    "node-notifier": "^4.6.1",
+    "open": "0.0.5",
+    "socket.io-client": "^1.7.2"
+  },
+  "scripts": {
+    "start": "node index"
+  }
+}
