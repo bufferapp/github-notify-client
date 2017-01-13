@@ -10,14 +10,14 @@ Note: currently this is only hooked up to the `buffer-web` repo. But could be ad
 
 ```sh
 npm i
-node index -n <your github handle>
+node index -n <your github handle> -s <the github-notify-server url>
 ```
 
 example
 
 ```sh
 npm i
-node index -n hharnisc
+node index -n hharnisc -s https://some.now.service.sh
 ```
 
 When a PR is assigned to you, you'll get a system notification. Clicking on the notification will open it up in your browser 🚀
