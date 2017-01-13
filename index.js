@@ -7,6 +7,7 @@ const minimist = require('minimist');
 const argv = minimist(process.argv.slice(2), {
   default: {
     verbose: false,
+    quiet: false,
   },
   alias: {
     n: 'name',
@@ -14,21 +15,29 @@ const argv = minimist(process.argv.slice(2), {
     v: 'verbose',
     verbose: 'verbose',
     server: 'server',
-    s: 'server'
+    s: 'server',
+    q: 'quiet',
+    quiet: 'quiet',
   },
 });
 
+function logMessage(message) {
+  if (!argv.quiet) {
+    console.log(message);
+  }
+}
+
 if(!argv.name) {
-  console.log('Please Specify Your Github Handle with `-n hharnisc or --name hharnisc`');
+  logMessage('Please Specify Your Github Handle with `-n hharnisc or --name hharnisc`');
   process.exit(1);
 }
 
 if (!argv.server) {
-  console.log('Please A Github Notify Server `-s http://example.com or --server http://example.com`');
+  logMessage('Please A Github Notify Server `-s http://example.com or --server http://example.com`');
   process.exit(1);
 }
 
-console.log(`Connecting: ${argv.server}`);
+logMessage(`Connecting: ${argv.server}`);
 
 const socket = io.connect(argv.server);
 
@@ -42,20 +51,20 @@ socket.on('payload', function(data){
       'wait': true,
       'sound': 'Funk',
     });
-    console.log(`New Pull Request Assigned From ${data.sender.login} - ${data.pull_request.html_url}`);
+    logMessage(`New Pull Request Assigned From ${data.sender.login} - ${data.pull_request.html_url}`);
   }
   if (argv.verbose) {
-    console.log(JSON.stringify(data, null, 2));
+    logMessage(JSON.stringify(data, null, 2));
   }
 });
 
 socket.on('connect_error', function() {
-  console.log(`Could Not Connect: ${argv.server}`);
+  logMessage(`Could Not Connect: ${argv.server}`);
 });
 
 socket.on('connect', function () {
-  console.log(`Connected To: ${argv.server}`);
-  console.log(`Waiting for PRs assigned to ${argv.name}`);
+  logMessage(`Connected To: ${argv.server}`);
+  logMessage(`Waiting for PRs assigned to ${argv.name}`);
 });
 
 notifier.on('click', function (notifierObject, options) {
